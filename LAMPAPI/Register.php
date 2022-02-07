@@ -1,10 +1,15 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true ");
+header("Access-Control-Allow-Methods: OPTIONS, GET, POST");
+header("Access-Control-Allow-Headers: Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control");
+
 //Place user values into variables
 $inData = getRequestInfo();
 $firstName = $inData["firstName"];
 $lastName = $inData["lastName"];
-$login = $inData["userName"];
+$login = $inData["login"];
 $password = $inData["password"];
 
 
@@ -28,13 +33,14 @@ if($conn->connect_error){
     } else{
         //Insert Users
         $stmt = $conn->prepare("INSERT into Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-        $password = md5($password);
         $stmt->bind_param('ssss', $firstName, $lastName, $login, $password);
         $stmt->execute();
 
         $stmt->close();
         $conn->close();
-        returnWithError("");
+
+        # Returns the firstName, lastName, and ID of the new user.
+        returnWithInfo( $row['firstName'], $row['lastName'], $row['ID'] );
     }
 } 
 

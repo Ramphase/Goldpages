@@ -1,8 +1,13 @@
 <?php
-	
 	$inData = getRequestInfo();
 	
-	$contact = $inData["firstName"];
+
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
+	$email = $inData["email"];
+	$phoneNumber = $inData["phoneNumber"];
+	$id = $inData["ID"];
+	$cid = $inData["CID"];
 	
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	
@@ -12,13 +17,13 @@
 	} 
 	else
 	{
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName=?");
-		$stmt->bind_param("s", $contact);
+		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?, LastName=?, Email=?, PhoneNumber=? WHERE ID=? AND CID=?");
+		$stmt->bind_param("ssss", $firstName, $lastName, $email, $phoneNumber, $id, $cid);
 		$stmt->execute();
-		echo "User was deleted: " . $contact . "\n";
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
+
 	}
 
 	function getRequestInfo()
@@ -37,6 +42,5 @@
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
+	
 ?>
-
-
