@@ -2,7 +2,8 @@
 	
 	$inData = getRequestInfo();
 	
-	$contact = $inData["firstName"];
+	$id = $inData["userId"];
+	$contid = $inData["contId"];
 	
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	
@@ -12,10 +13,9 @@
 	} 
 	else
 	{
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName=?");
-		$stmt->bind_param("s", $contact);
+		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=? AND CID=?");
+		$stmt->bind_param("ii", $id, $contid);
 		$stmt->execute();
-		echo "User was deleted: " . $contact . "\n";
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
