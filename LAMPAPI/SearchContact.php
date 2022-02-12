@@ -24,7 +24,7 @@
 				$str = preg_replace('/\s/', '', $str);
 			}
 
-			$stmt = $conn->prepare("SELECT CID, ID, FirstName, LastName, Email, PhoneNumber FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?) AND ID=?");
+			$stmt = $conn->prepare("SELECT CID, FirstName, LastName, Email, PhoneNumber FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?) AND ID=?");
 			$stmt->bind_param("sssi", $str, $str, $str, $id);
 		}
 		$stmt->execute();
@@ -39,7 +39,6 @@
 			$searchCount++;
 			$searchResults .= '{';
 			$searchResults .= '"contId":' . $row['CID'] . ',';
-			$searchResults .= '"userId":' . $row['ID'] . ',';
 			$searchResults .= '"firstName":"' . $row['FirstName'] . '",';
 			$searchResults .= '"lastName":"' . $row['LastName'] . '",';
 			$searchResults .= '"email":"' . $row['Email'] . '",';
