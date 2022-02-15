@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--Bootstrap CSS-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!--Written CSS-->
+    <link rel="stylesheet" href="css/contacts.css" />
+
+    <!--Bootstrap JS-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Font Awesome-->
+    <script
+      src="https://kit.fontawesome.com/bd614f8d2d.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!--Written JavaScript-->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/contacts.js"></script>
+
+    <!--perform these two functions when the page has loaded-->
+    <script type="text/javascript">
+      document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+          readCookie();
+          searchContacts();
+        },
+        false
+      );
+    </script>
+
+    <title>Contact Manager</title>
+  </head>
+
+  <body>
+    <!--bar at the top-->
+    <div class="topnav">
+      <span id="userNameDisplay" class="user-name">User:</span>
+      <img class="logo" src="images/goldpageslogo.png" alt="goldpageslogo" />
+      <button
+        id="signOutBtn"
+        type="button"
+        class="btn btn-primary"
+        onclick="doLogout();"
+      >
+        Sign Out
+      </button>
+    </div>
+
+    <h1>Contact Manager</h1>
+
+    <div class="row height d-flex justify-content-center align-items-center">
+      <div class="col-md-8">
+        <!--search input bar and button-->
+        <div class="search">
+          <input
+            id="searchInput"
+            class="form-control"
+            type="search"
+            placeholder="Search for Contacts"
+            aria-label="Search"
+          />
+          <button
+            class="btn btn-warning"
+            type="submit"
+            onClick="assignToSearch();searchContacts();"
+          >
+            Search
+          </button>
+          <span id="contactSearchResult"></span>
+        </div>
+        <button
+          id="createContactButton"
+          type="button"
+          class="btn btn-warning"
+          data-bs-toggle="modal"
+          data-bs-target="#addContactModal"
+        >
+          Create New Contact +
+        </button>
+
+        <!--Contact Table-->
+        <div class="table-container" id="tableContainer">
+          <div class="table-row">
+            <div class="table-column table-fname table-header">First Name</div>
+            <div class="table-column table-lname table-header">Last Name</div>
+            <div class="table-column table-phone table-header">Phone</div>
+            <div class="table-column table-email table-header">Email</div>
+            <div class="table-column blank-space"></div>
+            <div class="table-column blank-space"></div>
+          </div>
+          <span id="tableBody"></span>
+        </div>
+      </div>
+    </div>
+
+    <!--add contact modal-->
+    <div
+      class="modal fade"
+      id="addContactModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="addContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addContactModalLabel">
+              Create New Contact
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onclick="clearFields();"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">
+                  First Name
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstNameInput"
+                  placeholder="John"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lastNameInput" class="form-label">
+                  Last Name
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastNameInput"
+                  placeholder="Doe"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="phoneInput" class="form-label">
+                  Phone Number
+                </label>
+
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phoneInput"
+                  placeholder="012-345-6789"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="emailInput" class="form-label"> Email </label>
+
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailInput"
+                  placeholder="johndoe@example.com"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <span id="createContactResult"></span>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-dismiss="modal"
+              onclick="clearFields();"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning"
+              onClick="addContact();"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--edit contact modal-->
+    <div
+      class="modal fade"
+      id="editContactModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="editContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onclick="clearEditResult();"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="firstNameEdit" class="form-label">
+                  First Name
+                </label>
+
+                <input type="text" class="form-control" id="firstNameEdit" />
+              </div>
+              <div class="mb-3">
+                <label for="lastNameEdit" class="form-label"> Last Name </label>
+
+                <input type="text" class="form-control" id="lastNameEdit" />
+              </div>
+              <div class="mb-3">
+                <label for="phoneEdit" class="form-label"> Phone Number </label>
+
+                <input type="tel" class="form-control" id="phoneEdit" />
+              </div>
+              <div class="mb-3">
+                <label for="emailEdit" class="form-label"> Email </label>
+
+                <input type="email" class="form-control" id="emailEdit" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <span id="editContactResult"></span>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-dismiss="modal"
+              onclick="clearEditResult();"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning"
+              onClick="editContact();"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--delete contact modal-->
+    <div
+      class="modal fade"
+      id="deleteContactModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="deleteContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteContactModalLabel">
+              Delete Contact
+            </h5>
+          </div>
+          <div class="modal-body"><p id="deleteConfirmationMessage"></p></div>
+          <div class="modal-footer">
+            <span id="deleteContactResult"></span>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-dismiss="modal"
+              onclick="clearDeleteResult()"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="deleteContact();"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
