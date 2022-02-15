@@ -31,7 +31,7 @@
 
       <div class="container">
         <img src="images/goldpageslogo.png" alt="goldpageslogo" class="mt-3 mb-5" height="100">
-        <form class="form" id="login" style="max-width: 350px; margin:auto;">
+        <div class="form" id="login" style="max-width: 350px; margin:auto;">
 
           <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign In</h1>
 
@@ -50,13 +50,20 @@
           </div>
 
           <button type="button" class="w-100 mb-5 mt-3 btn btn-lg btn-primary form__button" onclick="login();">Sign in</button>
-          <p class="form--text">
-            <a class="form__link" id="createAccountLink">Don't Have an Account? Sign up</a>
+          <p class="form__text">
+            <a class="form__link" id="createAccountLink">
+              <span style="color :black">
+                Don't have an account?
+              </span>
+              <span span style="color :#4e4187">
+                Sign up
+              </span>
+            </a>
           </p>
           <span id="loginResult"></span>
-        </form>
+        </div>
 
-        <form class="form form--hidden" id="createAccount">
+        <div class="form form--hidden" id="createAccount">
           <h3 class ="form__title">Registration Form</h3>
 
         <div class="input-group row-g-3">
@@ -94,10 +101,17 @@
 
             <button type="button" class="btn btn-primary btn-lg mb-4 form__button" onclick="register();">Register</button>
             <p class="form__text">
-              <a class="form__link" href="./" id="loginLink">Already have an account? Sign in</a>
+              <a class="form__link" href="./" id="loginLink">
+                <span style="color :black">
+                  Already have an account?
+                </span>
+                <span style="color :#4e4187">
+                  Sign in
+                </span>
+              </a>
           </p>
           <span id="registerResult"></span>
-        </form>
+        </div>
 
       </div>
 
