@@ -39,12 +39,9 @@ if($conn->connect_error){
         $stmt->close();
         $conn->close();
 
-        # Returns the firstName, lastName, and ID of the new user.
-        returnWithInfo( $row['firstName'], $row['lastName'], $row['ID'] );
+        returnWithError("");
     }
 } 
-
-
 
 function getRequestInfo()
 {
@@ -59,13 +56,7 @@ function sendResultInfoAsJson( $obj )
 
 function returnWithError( $err )
 {
-    $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
-    sendResultInfoAsJson( $retValue );
-}
-
-function returnWithInfo( $firstName, $lastName, $id )
-{
-    $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+    $retValue = '{"error":"' . $err . '"}';
     sendResultInfoAsJson( $retValue );
 }
 
