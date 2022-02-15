@@ -116,7 +116,7 @@ function register() {
 
         saveCookie();
 
-        window.location.href = "contacts.html";
+        window.location.href = "index.html";
       }
     };
     xhr.send(jsonPayload);
